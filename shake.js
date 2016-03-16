@@ -27,6 +27,7 @@
             timeout: 1000 //default interval between events
         };
 
+        //循坏遍历options 
         if (typeof options === 'object') {
             for (var i in options) {
                 if (options.hasOwnProperty(i)) {
@@ -68,6 +69,8 @@
     //start listening for devicemotion
     Shake.prototype.start = function () {
         this.reset();
+        
+        // 如果浏览器支持变动事件的话 添加window的变动事件
         if (this.hasDeviceMotion) {
             window.addEventListener('devicemotion', this, false);
         }
@@ -83,13 +86,14 @@
 
     //calculates if shake did occur
     Shake.prototype.devicemotion = function (e) {
-        var current = e.accelerationIncludingGravity;
+        var current = e.accelerationIncludingGravity;//accelerationIncludingGravity包含的是{x:,y}3个方向上的加速度
         var currentTime;
         var timeDifference;
         var deltaX = 0;
         var deltaY = 0;
         var deltaZ = 0;
 
+        //第一次变动
         if ((this.lastX === null) && (this.lastY === null) && (this.lastZ === null)) {
             this.lastX = current.x;
             this.lastY = current.y;
