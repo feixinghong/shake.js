@@ -93,7 +93,7 @@
         var deltaY = 0;
         var deltaZ = 0;
 
-        //第一次变动
+        //第一次触发时存起来
         if ((this.lastX === null) && (this.lastY === null) && (this.lastZ === null)) {
             this.lastX = current.x;
             this.lastY = current.y;
@@ -104,7 +104,8 @@
         deltaX = Math.abs(this.lastX - current.x);
         deltaY = Math.abs(this.lastY - current.y);
         deltaZ = Math.abs(this.lastZ - current.z);
-
+        
+        //x y  水平面内  x z 与我们平行的一个面  y z 时间没到阈值或者摆动弧度不够都不会触发shake事件
         if (((deltaX > this.options.threshold) && (deltaY > this.options.threshold)) || ((deltaX > this.options.threshold) && (deltaZ > this.options.threshold)) || ((deltaY > this.options.threshold) && (deltaZ > this.options.threshold))) {
             //calculate time in milliseconds since last shake registered
             currentTime = new Date();
@@ -112,7 +113,7 @@
 
             if (timeDifference > this.options.timeout) {
                 window.dispatchEvent(this.event);
-                this.lastTime = new Date();
+                this.lastTime = new Date();//存起来下一次判断时间
             }
         }
 
